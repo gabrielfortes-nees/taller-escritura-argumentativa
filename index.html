@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taller de escritura argumentativa · EV2</title>
+<style>
+  :root{
+    --ink:#1d2b30; --primary:#0f4c5c; --primary-soft:#e6eff1;
+    --accent:#b9772a; --accent-soft:#f6ecdf;
+    --bg:#f6f3ec; --card:#ffffff; --muted:#5f6e72; --line:#e3ddd0;
+    --c-muyalta:#1d6f4c; --c-alta:#3a8f5e; --c-media:#b9772a;
+    --c-contextual:#2f6f8f; --c-baja:#8a7f74;
+    --radius:10px;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:16px;}
+  a{color:var(--primary);}
+  .wrap{max-width:920px;margin:0 auto;padding:0 1.25rem 4rem;}
+
+  header.site{background:var(--primary);color:#fff;padding:1.6rem 0 0;}
+  header.site .wrap{padding-bottom:0;}
+  header.site h1{font-family:var(--serif);font-weight:600;font-size:1.7rem;margin:0 0 .2rem;}
+  header.site p.sub{margin:0 0 1.1rem;opacity:.88;font-size:.96rem;max-width:62ch;}
+
+  nav.tabs{display:flex;gap:.25rem;flex-wrap:wrap;}
+  nav.tabs button{appearance:none;border:none;background:transparent;color:#fff;opacity:.78;
+    font-family:var(--sans);font-size:.92rem;padding:.7rem 1rem;cursor:pointer;
+    border-top-left-radius:8px;border-top-right-radius:8px;border-bottom:3px solid transparent;}
+  nav.tabs button:hover{opacity:1;}
+  nav.tabs button.active{opacity:1;background:var(--bg);color:var(--primary);font-weight:600;border-bottom-color:var(--accent);}
+
+  section.tab{display:none;padding-top:1.8rem;}
+  section.tab.active{display:block;}
+
+  h2{font-family:var(--serif);font-weight:600;font-size:1.4rem;color:var(--primary);margin:.2rem 0 .3rem;}
+  h3{font-family:var(--serif);font-weight:600;font-size:1.12rem;margin:1.7rem 0 .5rem;}
+  .lead{color:var(--muted);max-width:70ch;margin:.2rem 0 1.2rem;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.1rem 1.25rem;margin:1rem 0;}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;}
+
+  .videowrap{position:relative;width:100%;padding-bottom:56.25%;height:0;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#000;margin:.4rem 0 1rem;}
+  .videowrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+
+  /* Ruta argumentativa (estructura del autor) */
+  .miniflow{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center;margin:.4rem 0 1.1rem;}
+  .miniflow span{background:var(--primary-soft);color:var(--primary);font-size:.78rem;padding:.2rem .55rem;border-radius:14px;white-space:nowrap;}
+  .miniflow span.ctr{background:var(--accent-soft);color:#6b4d24;}
+  .miniflow i{color:var(--muted);font-style:normal;}
+  .route{display:flex;flex-direction:column;gap:.45rem;}
+  .stg{display:grid;grid-template-columns:1.9rem 1fr;gap:.6rem;align-items:start;background:#fff;border:1px solid var(--line);
+    border-left:4px solid var(--primary);border-radius:0 8px 8px 0;padding:.55rem .8rem;}
+  .stg.ctr{border-left-color:var(--accent);}
+  .stg.end{border-left-color:#1d6f4c;}
+  .stg .n{width:1.7rem;height:1.7rem;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;}
+  .stg.ctr .n{background:var(--accent);} .stg.end .n{background:#1d6f4c;}
+  .stg b{color:var(--primary);} .stg.ctr b{color:var(--accent);} .stg.end b{color:#1d6f4c;}
+  .stg .q{color:var(--muted);font-size:.9rem;display:block;margin-top:.1rem;}
+
+  .toulmin{display:grid;grid-template-columns:1fr;gap:.5rem;}
+  .toulmin .row{display:grid;grid-template-columns:130px 1fr;gap:.6rem;align-items:start;}
+  .toulmin .k{font-weight:600;color:var(--primary);font-size:.92rem;padding-top:.15rem;}
+  .toulmin .v{color:var(--muted);font-size:.95rem;}
+
+  .ladder{display:flex;flex-direction:column;gap:.4rem;margin:.6rem 0;}
+  .rung{display:grid;grid-template-columns:84px 1fr;align-items:center;gap:.7rem;padding:.55rem .8rem;border-radius:8px;background:#fff;border:1px solid var(--line);}
+  .rung .chip{color:#fff;font-size:.74rem;font-weight:600;padding:.18rem .55rem;border-radius:20px;white-space:nowrap;text-align:center;}
+  .rung small{color:var(--muted);}
+  .chip.muyalta{background:var(--c-muyalta);} .chip.alta{background:var(--c-alta);}
+  .chip.media{background:var(--c-media);} .chip.contextual{background:var(--c-contextual);}
+  .chip.baja{background:var(--c-baja);}
+
+  .note{background:var(--accent-soft);border:1px solid #ecdcc4;border-radius:8px;padding:.7rem .9rem;font-size:.92rem;color:#6b4d24;}
+  .note b{color:var(--accent);}
+
+  table.fn{width:100%;border-collapse:collapse;font-size:.9rem;margin:.6rem 0;}
+  table.fn th,table.fn td{border:1px solid var(--line);padding:.5rem .65rem;text-align:left;vertical-align:top;}
+  table.fn th{background:var(--primary-soft);color:var(--primary);font-weight:600;}
+  table.fn td:first-child{font-weight:600;color:var(--ink);white-space:nowrap;}
+
+  .conns{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;}
+  .connbox{background:#fff;border:1px solid var(--line);border-radius:8px;padding:.7rem .85rem;}
+  .connbox h4{margin:0 0 .35rem;font-size:.95rem;color:var(--primary);}
+  .connbox .ops{display:flex;flex-wrap:wrap;gap:.3rem;}
+  .connbox .ops span{background:var(--primary-soft);color:var(--primary);font-size:.8rem;padding:.15rem .5rem;border-radius:14px;}
+
+  .schema{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem;margin:.6rem 0;}
+  .scard{background:#fff;border:1px solid var(--line);border-radius:8px;padding:.8rem;}
+  .scard .tag{font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);}
+  .scard p{margin:.3rem 0 0;font-size:.9rem;color:var(--muted);}
+
+  label.fld{display:block;font-weight:600;font-size:.9rem;margin:.9rem 0 .3rem;color:var(--ink);}
+  label.fld .hint{font-weight:400;color:var(--muted);font-size:.82rem;}
+  input[type=text],textarea,select{width:100%;font-family:var(--sans);font-size:.95rem;color:var(--ink);
+    border:1px solid var(--line);border-radius:8px;padding:.55rem .65rem;background:#fff;}
+  textarea{resize:vertical;min-height:62px;line-height:1.5;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);}
+
+  .stepcard{border:1px solid var(--line);border-left:4px solid var(--primary);border-radius:8px;padding:.9rem 1rem;margin:.9rem 0;background:#fff;}
+  .stepcard.ctr{border-left-color:var(--accent);}
+  .stepcard .label-step{font-family:var(--serif);font-weight:600;color:var(--primary);}
+  .stepcard.ctr .label-step{color:var(--accent);}
+  .argblock{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:.9rem 1rem;margin:.9rem 0;background:#fff;}
+  .argblock .head{display:flex;justify-content:space-between;align-items:center;}
+  .argblock .head b{color:var(--accent);font-family:var(--serif);}
+  .row3{display:grid;grid-template-columns:1fr 130px 1fr;gap:.6rem;}
+  .fuerza-tag{display:inline-block;color:#fff;font-size:.74rem;font-weight:600;padding:.18rem .55rem;border-radius:20px;}
+
+  .checklist{list-style:none;margin:.4rem 0 0;padding:0;}
+  .checklist li{display:flex;gap:.6rem;align-items:flex-start;padding:.45rem .2rem;border-bottom:1px solid var(--line);}
+  .checklist li:last-child{border-bottom:none;}
+  .checklist input{margin-top:.25rem;width:18px;height:18px;flex:0 0 auto;}
+  .checklist .qx{font-size:.95rem;} .checklist .asp{display:block;font-size:.78rem;color:var(--muted);}
+
+  .btn{appearance:none;cursor:pointer;font-family:var(--sans);font-size:.9rem;border-radius:8px;padding:.5rem .9rem;
+    border:1px solid var(--primary);background:#fff;color:var(--primary);font-weight:600;}
+  .btn:hover{background:var(--primary-soft);}
+  .btn.primary{background:var(--primary);color:#fff;}
+  .btn.primary:hover{background:#0c3e4b;}
+  .btn.ghost{border-color:var(--line);color:var(--muted);font-weight:400;}
+  .btn.small{font-size:.82rem;padding:.35rem .6rem;}
+  .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:1.2rem 0;}
+
+  .toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%) translateY(120%);
+    background:var(--ink);color:#fff;padding:.6rem 1rem;border-radius:8px;font-size:.9rem;transition:transform .3s;z-index:50;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+
+  /* Vista previa / documento PDF */
+  #pdf-doc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:2rem 2.2rem;margin:1rem 0;
+    font-family:var(--serif);color:#1a1a1a;line-height:1.55;}
+  #pdf-doc .doc-title{font-size:1.25rem;font-weight:600;color:#000;margin:0 0 .2rem;}
+  #pdf-doc .doc-meta{font-family:var(--sans);font-size:.82rem;color:#555;margin:0 0 1.2rem;}
+  #pdf-doc .doc-tesis{border-left:3px solid #000;padding:.4rem .8rem;margin:0 0 1.2rem;background:#f7f7f7;}
+  #pdf-doc .doc-tesis .lbl,#pdf-doc .node .lbl{font-family:var(--sans);font-size:.72rem;font-weight:700;
+    letter-spacing:.06em;text-transform:uppercase;color:#666;display:block;}
+  #pdf-doc .node{margin:0 0 .2rem;padding:.35rem 0 .35rem .2rem;}
+  #pdf-doc .node.arg{border-left:3px solid #2f6f8f;padding-left:.8rem;}
+  #pdf-doc .node.contra{border-left:3px solid #b9772a;padding-left:.8rem;}
+  #pdf-doc .node.refu{border-left:3px solid #1d6f4c;padding-left:.8rem;}
+  #pdf-doc .node .titleline{font-weight:600;}
+  #pdf-doc .sub{font-size:.92rem;margin:.15rem 0 .1rem;padding-left:1.1rem;position:relative;}
+  #pdf-doc .sub:before{content:"–";position:absolute;left:.2rem;color:#999;}
+  #pdf-doc .sub .k{font-family:var(--sans);font-size:.74rem;color:#777;}
+  #pdf-doc .conn{font-family:var(--sans);font-style:italic;color:#b9772a;font-size:.85rem;margin:.25rem 0 .25rem 1rem;}
+  #pdf-doc .ev-fuerza{font-family:var(--sans);font-size:.7rem;font-weight:700;color:#fff;padding:.05rem .4rem;border-radius:12px;}
+  #pdf-doc .empty{color:#b00;font-family:var(--sans);font-size:.82rem;font-style:italic;}
+  #pdf-doc .doc-foot{font-family:var(--sans);font-size:.72rem;color:#888;margin-top:1.4rem;border-top:1px solid #eee;padding-top:.5rem;}
+
+  footer.site{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1rem;}
+  .refs{font-size:.86rem;color:var(--muted);}
+  .refs li{margin:.3rem 0;}
+
+  @media print{
+    body{background:#fff;}
+    header.site,nav.tabs,footer.site,.toolbar,#p3-form,#print-hint{display:none !important;}
+    .wrap{max-width:none;padding:0;}
+    section.tab{display:none !important;}
+    #pdf-doc{border:none;border-radius:0;padding:0;margin:0;}
+    @page{margin:1.8cm;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <h1>Taller de escritura argumentativa</h1>
+    <p class="sub">Una guía para planificar el texto de la Entrega 2 (EV2): justificar, con evidencia y argumentos, por qué tu diseño de actividad sostiene el proceso cognitivo que elegiste.</p>
+    <nav class="tabs">
+      <button data-tab="t1" class="active">1 · Fundamentos</button>
+      <button data-tab="t2">2 · Estructuras y operadores</button>
+      <button data-tab="t3">3 · Bosquejo + PDF</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ PESTAÑA 1 ============ -->
+<section class="tab active" id="t1">
+  <h2>Cómo se arma un ensayo argumentativo y qué cuenta como evidencia</h2>
+  <p class="lead">Un ensayo argumentativo no resume: <b>dialoga y defiende una tesis</b>. Empieza por ver la clase y luego recorre la ruta del texto, etapa por etapa.</p>
+
+  <div class="videowrap">
+    <iframe src="https://www.youtube.com/embed/yliFyI9vfnY" title="Clase: escritura argumentativa"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+
+  <h3>La ruta del texto, etapa por etapa</h3>
+  <p class="lead">Esta es la estructura que organiza tu defensa. Cada etapa responde una pregunta; si la respondes, ya tienes el texto pensado.</p>
+  <div class="miniflow">
+    <span>Introducción</span><i>›</i><span>Argumento 1</span><i>›</i><span>Justificativa 1</span><i>›</i><span>Argumento 2</span><i>›</i><span>Justificativa 2</span><i>›</i><span class="ctr">Contraargumento</span><i>›</i><span class="ctr">Respuesta</span><i>›</i><span>Conclusión</span>
+  </div>
+  <div class="route">
+    <div class="stg"><div class="n">1</div><div><b>Introducción</b><span class="q">¿A qué problema estoy intentando dialogar? ¿Qué palabras clave debo definir?</span></div></div>
+    <div class="stg"><div class="n">2</div><div><b>Argumento 1</b><span class="q">¿Qué necesito decir para conducirme a la conclusión? ¿Quién ha hablado de esto antes de mí?</span></div></div>
+    <div class="stg"><div class="n">3</div><div><b>Justificativa 1</b><span class="q">¿Tengo evidencia o aportes teóricos para fundamentar?</span></div></div>
+    <div class="stg"><div class="n">4</div><div><b>Argumento 2</b><span class="q">¿Hay otras razones que me lleven a mi conclusión?</span></div></div>
+    <div class="stg"><div class="n">5</div><div><b>Justificativa 2</b><span class="q">¿Otras evidencias o diálogos teóricos posibles?</span></div></div>
+    <div class="stg ctr"><div class="n">6</div><div><b>Contraargumento (anticipado)</b><span class="q">¿Hay gente en desacuerdo con lo que digo?</span></div></div>
+    <div class="stg ctr"><div class="n">7</div><div><b>Respuesta al contraargumento</b><span class="q">¿Cómo respondo a estas personas?</span></div></div>
+    <div class="stg end"><div class="n">8</div><div><b>Conclusión</b><span class="q">Tu trabajo es llevar el texto a la conclusión, no producir la conclusión mientras vas escribiendo.</span></div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:.2rem;">El esqueleto de cada argumento (Toulmin)</h3>
+      <div class="toulmin">
+        <div class="row"><div class="k">Afirmación</div><div class="v">Lo que sostienes (tu tesis o un argumento).</div></div>
+        <div class="row"><div class="k">Evidencia</div><div class="v">Los datos, estudios o hechos en que te apoyas.</div></div>
+        <div class="row"><div class="k">Garantía</div><div class="v">El puente: <i>por qué</i> esa evidencia justifica la afirmación.</div></div>
+        <div class="row"><div class="k">Respaldo</div><div class="v">Lo que sostiene la garantía (teoría, literatura).</div></div>
+        <div class="row"><div class="k">Modalizador</div><div class="v">El grado de certeza: «probablemente», «en general».</div></div>
+        <div class="row"><div class="k">Refutación</div><div class="v">Las condiciones bajo las que la afirmación no se sostendría.</div></div>
+      </div>
+      <div class="note" style="margin-top:.9rem;"><b>Versión escolar (CER):</b> afirmación, evidencia y razonamiento. Es Toulmin simplificado y es el lenguaje que verán tus estudiantes en la actividad.</div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:.2rem;">Persuadir no es probar</h3>
+      <p class="lead" style="margin-bottom:.5rem;">Una evidencia puede ser muy <b>persuasiva</b> sin ser de alta <b>calidad</b>. Conviene distinguir dos ejes:</p>
+      <p style="margin:.2rem 0;font-size:.94rem;"><b style="color:var(--accent);">Fuerza persuasiva.</b> Qué tan convincente resulta para quien lee: claridad lógica (logos), credibilidad de la fuente (ethos) y conexión con valores (pathos).</p>
+      <p style="margin:.6rem 0;font-size:.94rem;"><b style="color:var(--accent);">Calidad.</b> Qué tan bien la evidencia sostiene la afirmación: rigor del método, adecuación a la pregunta y relevancia para tu caso.</p>
+      <div class="note" style="margin-top:.6rem;">Una anécdota puede emocionar mucho y aun así ser evidencia débil para una afirmación causal.</div>
+    </div>
+  </div>
+
+  <h3>¿Qué es evidencia en educación? Fuerza y función</h3>
+  <p class="lead">La jerarquía ordena la <b>fuerza</b> de la evidencia para sostener afirmaciones de causa-efecto, de mayor a menor:</p>
+  <div class="ladder">
+    <div class="rung"><span class="chip muyalta">Muy alta</span><small>Revisión sistemática / metaanálisis</small></div>
+    <div class="rung"><span class="chip alta">Alta</span><small>Estudio experimental (RCT) o cuasiexperimental robusto</small></div>
+    <div class="rung"><span class="chip media">Media</span><small>Estudio observacional, correlacional o longitudinal</small></div>
+    <div class="rung"><span class="chip contextual">Contextual</span><small>Estudio de caso, evidencia cualitativa, marco teórico</small></div>
+    <div class="rung"><span class="chip baja">Baja</span><small>Opinión de experto, anécdota, sentido común</small></div>
+  </div>
+
+  <div class="note"><b>No todos necesitan un metaanálisis.</b> La jerarquía mide la fuerza para afirmaciones causales, pero toda evidencia tiene una <b>función</b>: la mejor evidencia es la que cumple el papel que tu argumento necesita. Elige según para qué la usas, no por «subir» en la escalera.</div>
+
+  <table class="fn">
+    <thead><tr><th>Si tu argumento busca…</th><th>Tipo de evidencia adecuado</th></tr></thead>
+    <tbody>
+      <tr><td>Establecer causa-efecto («¿esto funciona?»)</td><td>Experimentos, cuasiexperimentos, revisiones sistemáticas</td></tr>
+      <tr><td>Explorar o describir un fenómeno</td><td>Estudios de caso, evidencia cualitativa, observacional</td></tr>
+      <tr><td>Fundamentar teóricamente</td><td>Marcos y modelos conceptuales de la literatura</td></tr>
+      <tr><td>Mostrar magnitud o prevalencia</td><td>Estudios observacionales, encuestas, datos secundarios</td></tr>
+      <tr><td>Inspirar el diseño (creatividad con datos previos)</td><td>Experiencias documentadas, antecedentes, ejemplos</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Para anclar (referencias)</h3>
+  <ul class="refs">
+    <li>Toulmin, S. (2003). <i>The uses of argument</i>. Cambridge University Press.</li>
+    <li>Erduran, S., Simon, S., &amp; Osborne, J. (2004). TAPping into argumentation. <i>Science Education, 88</i>(6), 915–933.</li>
+    <li>McNeill, K. L., &amp; Krajcik, J. (2012). <i>Supporting students in constructing explanations in science: The claim, evidence, and reasoning framework.</i></li>
+    <li>Osborne, J. (2010). Arguing to learn in science. <i>Science, 328</i>(5977), 463–466.</li>
+    <li>Gough, D. (2007). Weight of evidence. <i>Research Papers in Education, 22</i>(2), 213–228.</li>
+    <li>Nutley, S., Walter, I., &amp; Davies, H. (2007). <i>Using evidence: How research can inform public services.</i></li>
+    <li>Education Endowment Foundation. <i>Teaching and Learning Toolkit</i> (niveles de evidencia).</li>
+  </ul>
+</section>
+
+<!-- ============ PESTAÑA 2 ============ -->
+<section class="tab" id="t2">
+  <h2>Estructuras argumentativas y operadores del discurso</h2>
+  <p class="lead">El repertorio de piezas: las estructuras que organizan tu defensa y los conectores que hacen visible la lógica entre las ideas. Son las mismas opciones que aparecen en el constructor de la página 3.</p>
+
+  <h3>Estructuras: argumento, contraargumento, refutación</h3>
+  <div class="schema">
+    <div class="scard"><span class="tag">Argumento</span><p>Afirmación + justificativa (evidencia o teoría). Sostiene tu tesis.</p></div>
+    <div class="scard"><span class="tag">Contraargumento</span><p>Una objeción razonable que anticipas: ¿hay gente en desacuerdo?</p></div>
+    <div class="scard"><span class="tag">Respuesta</span><p>Cómo respondes a esa objeción y por qué no derriba tu tesis.</p></div>
+    <div class="scard"><span class="tag">Concesión</span><p>Reconoces parte del punto contrario antes de refutar: «si bien…, no obstante…».</p></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:.2rem;">El movimiento completo, en una línea</h3>
+    <p style="font-family:var(--serif);font-size:1.05rem;margin:.4rem 0;">
+      Sostengo X <span style="color:var(--accent);">porque</span> la evidencia E lo apoya;
+      <span style="color:var(--accent);">si bien</span> alguien podría objetar Y,
+      <span style="color:var(--accent);">esa objeción no se sostiene porque</span> Z;
+      <span style="color:var(--accent);">por lo tanto</span>, X.
+    </p>
+  </div>
+
+  <h3>Operadores discursivos por función</h3>
+  <p class="lead">Los conectores señalan la relación lógica entre tus ideas. Elige según lo que quieras hacer:</p>
+  <div class="conns" id="conns"></div>
+</section>
+
+<!-- ============ PESTAÑA 3 ============ -->
+<section class="tab" id="t3">
+  <h2>Construye el bosquejo de tu texto</h2>
+  <p class="lead">No vas a redactar el ensayo aquí: vas a armar su <b>esqueleto lógico</b> siguiendo la ruta de la página 1. Define el problema y la tesis, encadena argumentos con su justificativa y sus conectores, anticipa una objeción y respóndela, y exporta un PDF con la estructura. Tu trabajo se guarda solo en este navegador.</p>
+
+  <div id="p3-form">
+    <div class="stepcard">
+      <span class="label-step">Introducción</span>
+      <label class="fld" for="f-problema">¿A qué problema estoy intentando dialogar? <span class="hint">(el problema y las palabras clave a definir)</span></label>
+      <textarea id="f-problema" data-k="problema" placeholder="El problema que abordo es… Palabras clave: …"></textarea>
+      <label class="fld" for="f-tesis">Tesis / idea central <span class="hint">(la postura que vas a defender)</span></label>
+      <textarea id="f-tesis" data-k="tesis" placeholder="Sostengo que mi diseño de actividad favorece [proceso cognitivo] porque…"></textarea>
+      <label class="fld" for="f-proceso">Proceso cognitivo que elegiste</label>
+      <input type="text" id="f-proceso" data-k="proceso" placeholder="p. ej., metacognición / carga cognitiva / indagación…">
+    </div>
+
+    <h3 style="margin-bottom:.2rem;">Argumentos y justificativas</h3>
+    <p class="lead" style="margin-top:.2rem;">Cada bloque es un argumento (qué necesitas decir para llegar a tu conclusión) y su justificativa (la evidencia o teoría que lo fundamenta, con su función).</p>
+    <div id="args"></div>
+    <button class="btn small" id="add-arg" type="button">+ Añadir argumento</button>
+
+    <div class="stepcard ctr" style="margin-top:1.4rem;">
+      <span class="label-step">Contraargumento y respuesta</span>
+      <label class="fld" for="f-contra">Contraargumento anticipado <span class="hint">(¿hay gente en desacuerdo con lo que digo?)</span></label>
+      <textarea id="f-contra" data-k="contra" placeholder="Alguien podría sostener que…"></textarea>
+      <label class="fld" for="f-conn-contra">Conector hacia la respuesta</label>
+      <select id="f-conn-contra" data-k="connContra"></select>
+      <label class="fld" for="f-refu">Respuesta al contraargumento <span class="hint">(¿cómo respondo a estas personas?)</span></label>
+      <textarea id="f-refu" data-k="refutacion" placeholder="Sin embargo, esa objeción no considera que…"></textarea>
+    </div>
+
+    <div class="stepcard end" style="border-left-color:#1d6f4c;">
+      <span class="label-step" style="color:#1d6f4c;">Conclusión</span>
+      <label class="fld" for="f-concl">¿A dónde lleva el texto? <span class="hint">(recuerda: tu trabajo es llevar el texto a la conclusión)</span></label>
+      <textarea id="f-concl" data-k="conclusion" placeholder="En síntesis, el diseño propuesto…"></textarea>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn primary" id="btn-pdf" type="button">Exportar PDF</button>
+      <button class="btn" id="btn-save" type="button">Guardar ahora</button>
+      <button class="btn ghost" id="btn-json" type="button">Descargar copia (.json)</button>
+      <label class="btn ghost" style="margin:0;">Cargar copia
+        <input type="file" id="file-json" accept="application/json" style="display:none;">
+      </label>
+      <button class="btn ghost" id="btn-clear" type="button">Limpiar todo</button>
+    </div>
+    <p id="print-hint" class="lead" style="font-size:.85rem;">Al exportar se abre el diálogo de impresión: elige «Guardar como PDF» como destino.</p>
+
+    <h3>Vista previa</h3>
+  </div>
+
+  <div id="pdf-doc"></div>
+
+  <div id="p3-extra">
+    <h3>Antes de entregar: lista de control</h3>
+    <p class="lead" style="margin-top:.2rem;">Preguntas para revisar cuando escribas el texto final. Se marcan y se guardan solas.</p>
+    <ul class="checklist" id="checklist"></ul>
+  </div>
+</section>
+
+</div>
+
+<footer class="site"><div class="wrap" style="padding-bottom:1rem;">
+  Taller de escritura argumentativa · apoyo para la Entrega 2 (EV2) · magíster en Cognición y Aprendizaje de las Ciencias.
+</div></footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CONECTORES = {
+    "Adición":["además","asimismo","igualmente","por otra parte","del mismo modo"],
+    "Oposición / contraste":["sin embargo","no obstante","en cambio","por el contrario","ahora bien"],
+    "Concesión":["aunque","a pesar de que","si bien","pese a que"],
+    "Causa":["porque","ya que","puesto que","dado que","debido a que"],
+    "Consecuencia":["por lo tanto","por consiguiente","en consecuencia","así pues","de ahí que"],
+    "Condición":["si","siempre que","a condición de que","en caso de que"],
+    "Ejemplificación":["por ejemplo","en concreto","a saber","como muestra"],
+    "Reformulación":["es decir","o sea","en otras palabras","dicho de otro modo"],
+    "Ordenación":["en primer lugar","a continuación","por último","finalmente"],
+    "Conclusión":["en suma","en conclusión","en definitiva","en síntesis"]
+  };
+  var TIPOS = [
+    {v:"revision",label:"Revisión sistemática / metaanálisis",fuerza:"Muy alta"},
+    {v:"experimental",label:"Estudio experimental (RCT)",fuerza:"Alta"},
+    {v:"cuasi",label:"Estudio cuasiexperimental",fuerza:"Alta"},
+    {v:"observacional",label:"Estudio observacional / correlacional",fuerza:"Media"},
+    {v:"longitudinal",label:"Estudio longitudinal",fuerza:"Media"},
+    {v:"caso",label:"Estudio de caso / evidencia cualitativa",fuerza:"Contextual"},
+    {v:"teorico",label:"Marco teórico / modelo conceptual",fuerza:"Contextual"},
+    {v:"opinion",label:"Opinión de experto / anécdota",fuerza:"Baja"}
+  ];
+  var FUERZAS = ["Muy alta","Alta","Media","Contextual","Baja"];
+  var FUNCIONES = ["Fundamentar teóricamente","Establecer causa-efecto","Explorar o describir un fenómeno","Ilustrar con un ejemplo","Mostrar magnitud o prevalencia","Inspirar el diseño (datos previos)"];
+  var FCOLOR = {"Muy alta":"#1d6f4c","Alta":"#3a8f5e","Media":"#b9772a","Contextual":"#2f6f8f","Baja":"#8a7f74"};
+  var CHECK = [
+    ["¿Qué palabras clave debo definir en mi introducción?","Introducción"],
+    ["¿Cuál es la estructura de mis párrafos?","Organización de párrafos"],
+    ["¿Qué nivel de detalle necesitaré en cada sección?","Nivel de detalle"],
+    ["¿Qué diagramas voy a dibujar y cómo los relacionaré con mi argumento?","Uso de diagramas"],
+    ["¿Qué evidencia voy a incluir y qué función cumple?","Inclusión de evidencia"],
+    ["¿Qué voy a decir en mi conclusión?","Conclusión"],
+    ["¿Este ensayo aborda directamente la tarea establecida?","Relevancia del tema"],
+    ["¿Presenta una posición sólida y respaldada?","Apoyo de argumentos"],
+    ["¿Utiliza fuentes relevantes de manera apropiada?","Uso de fuentes"],
+    ["¿La expresión es clara y el estilo es apropiado?","Claridad y estilo"],
+    ["¿El ensayo está organizado coherentemente (introducción, cuerpo y conclusión claros)?","Organización del ensayo"]
+  ];
+  var STORE = "taller_arg_ev2_v2";
+
+  var state = blank();
+  function blank(){return {problema:"",tesis:"",proceso:"",args:[newArg()],contra:"",connContra:"sin embargo",refutacion:"",conclusion:"",checklist:{}};}
+  function newArg(){return {afirmacion:"",evidencia:"",tipo:"teorico",fuerza:"Contextual",funcion:"Fundamentar teóricamente",garantia:"",conector:"por lo tanto"};}
+
+  function $(s,c){return (c||document).querySelector(s);}
+  function el(tag,attrs,html){var e=document.createElement(tag);if(attrs)for(var k in attrs)e.setAttribute(k,attrs[k]);if(html!=null)e.innerHTML=html;return e;}
+
+  /* ---------- Tabs ---------- */
+  var tabBtns = document.querySelectorAll("nav.tabs button");
+  for(var i=0;i<tabBtns.length;i++){tabBtns[i].addEventListener("click",function(){
+    var id=this.getAttribute("data-tab");
+    for(var j=0;j<tabBtns.length;j++)tabBtns[j].classList.remove("active");
+    this.classList.add("active");
+    var secs=document.querySelectorAll("section.tab");
+    for(var k=0;k<secs.length;k++)secs[k].classList.remove("active");
+    $("#"+id).classList.add("active");
+    window.scrollTo(0,0);
+  });}
+
+  /* ---------- Pestaña 2: conectores ---------- */
+  (function(){
+    var box=$("#conns");
+    for(var fn in CONECTORES){
+      var b=el("div",{"class":"connbox"});
+      b.appendChild(el("h4",null,fn));
+      var ops=el("div",{"class":"ops"});
+      CONECTORES[fn].forEach(function(o){ops.appendChild(el("span",null,o));});
+      b.appendChild(ops);box.appendChild(b);
+    }
+  })();
+
+  /* ---------- Selects de conectores ---------- */
+  function connOptions(sel,selected){
+    sel.innerHTML="";
+    for(var fn in CONECTORES){
+      var g=el("optgroup",{"label":fn});
+      CONECTORES[fn].forEach(function(o){
+        var op=el("option",{"value":o},o);
+        if(o===selected)op.selected=true;
+        g.appendChild(op);
+      });
+      sel.appendChild(g);
+    }
+  }
+
+  /* ---------- Render de argumentos ---------- */
+  function renderArgs(){
+    var wrap=$("#args");wrap.innerHTML="";
+    state.args.forEach(function(a,idx){
+      var blk=el("div",{"class":"argblock"});
+      var head=el("div",{"class":"head"});
+      head.appendChild(el("b",null,"Argumento "+(idx+1)));
+      if(state.args.length>1){
+        var del=el("button",{"class":"btn ghost small","type":"button"},"Quitar");
+        del.addEventListener("click",function(){state.args.splice(idx,1);renderArgs();sync();});
+        head.appendChild(del);
+      }
+      blk.appendChild(head);
+
+      blk.appendChild(field("Argumento (afirmación)","textarea","afirmacion",a.afirmacion,idx,"¿Qué necesito decir para conducirme a la conclusión? ¿Quién ha hablado de esto antes?"));
+      blk.appendChild(field("Justificativa (evidencia o teoría)","textarea","evidencia",a.evidencia,idx,"¿Tengo evidencia o aportes teóricos para fundamentar? (con autor/año)"));
+
+      var r3=el("div",{"class":"row3"});
+      // tipo
+      var tWrap=el("div");tWrap.appendChild(lab("Tipo de evidencia"));
+      var tSel=el("select");
+      TIPOS.forEach(function(t){var op=el("option",{"value":t.v},t.label);if(t.v===a.tipo)op.selected=true;tSel.appendChild(op);});
+      tSel.addEventListener("change",function(){
+        a.tipo=this.value;
+        var found=TIPOS.filter(function(t){return t.v===a.tipo;})[0];
+        if(found){a.fuerza=found.fuerza;}
+        renderArgs();sync();
+      });
+      tWrap.appendChild(tSel);
+      // fuerza
+      var fWrap=el("div");fWrap.appendChild(lab("Fuerza"));
+      var fSel=el("select");
+      FUERZAS.forEach(function(f){var op=el("option",{"value":f},f);if(f===a.fuerza)op.selected=true;fSel.appendChild(op);});
+      fSel.addEventListener("change",function(){a.fuerza=this.value;renderArgs();sync();});
+      fWrap.appendChild(fSel);
+      // función
+      var nWrap=el("div");nWrap.appendChild(lab("Función de la evidencia"));
+      var nSel=el("select");
+      FUNCIONES.forEach(function(f){var op=el("option",{"value":f},f);if(f===a.funcion)op.selected=true;nSel.appendChild(op);});
+      nSel.addEventListener("change",function(){a.funcion=this.value;sync();});
+      nWrap.appendChild(nSel);
+      r3.appendChild(tWrap);r3.appendChild(fWrap);r3.appendChild(nWrap);
+      blk.appendChild(r3);
+
+      var tag=el("span",{"class":"fuerza-tag"},"Fuerza: "+a.fuerza);
+      tag.style.background=FCOLOR[a.fuerza];tag.style.marginTop=".5rem";
+      blk.appendChild(tag);
+
+      blk.appendChild(field("Garantía: cómo fundamenta tu diseño y el proceso cognitivo","textarea","garantia",a.garantia,idx,"Esta justificativa sostiene mi argumento porque, en mi diseño, …"));
+
+      blk.appendChild(lab("Conector hacia el siguiente bloque"));
+      var cSel=el("select");connOptions(cSel,a.conector);
+      cSel.addEventListener("change",function(){a.conector=this.value;sync();});
+      blk.appendChild(cSel);
+
+      wrap.appendChild(blk);
+    });
+  }
+  function lab(txt){return el("label",{"class":"fld"},txt);}
+  function field(labelTxt,kind,key,val,idx,ph){
+    var w=el("div");
+    w.appendChild(lab(labelTxt));
+    var inp=kind==="textarea"?el("textarea"):el("input",{"type":"text"});
+    inp.setAttribute("placeholder",ph||"");inp.value=val||"";
+    inp.addEventListener("input",function(){state.args[idx][key]=this.value;sync();});
+    w.appendChild(inp);
+    return w;
+  }
+
+  /* ---------- Campos simples ---------- */
+  function bindSimple(){
+    var nodes=document.querySelectorAll("#p3-form [data-k]");
+    for(var i=0;i<nodes.length;i++){(function(n){
+      var k=n.getAttribute("data-k");
+      if(n.tagName==="SELECT")return;
+      n.addEventListener("input",function(){state[k]=this.value;sync();});
+    })(nodes[i]);}
+    var cc=$("#f-conn-contra");connOptions(cc,state.connContra);
+    cc.addEventListener("change",function(){state.connContra=this.value;sync();});
+  }
+  function fillSimple(){
+    $("#f-problema").value=state.problema||"";
+    $("#f-tesis").value=state.tesis||"";
+    $("#f-proceso").value=state.proceso||"";
+    $("#f-contra").value=state.contra||"";
+    $("#f-refu").value=state.refutacion||"";
+    $("#f-concl").value=state.conclusion||"";
+    connOptions($("#f-conn-contra"),state.connContra);
+  }
+
+  /* ---------- Checklist ---------- */
+  function renderCheck(){
+    var ul=$("#checklist");ul.innerHTML="";
+    CHECK.forEach(function(c,idx){
+      var li=el("li");
+      var cb=el("input",{"type":"checkbox","id":"chk"+idx});
+      if(state.checklist[idx])cb.checked=true;
+      cb.addEventListener("change",function(){state.checklist[idx]=this.checked;persist();});
+      var txt=el("label",{"for":"chk"+idx});
+      txt.innerHTML='<span class="qx">'+c[0]+'</span><span class="asp">'+c[1]+'</span>';
+      li.appendChild(cb);li.appendChild(txt);ul.appendChild(li);
+    });
+  }
+
+  /* ---------- Vista previa / documento ---------- */
+  function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function emptyOr(s){return s&&s.trim()?esc(s):'<span class="empty">(pendiente)</span>';}
+
+  function renderDoc(){
+    var d=$("#pdf-doc");var h="";
+    h+='<p class="doc-title">Esqueleto argumentativo del ensayo</p>';
+    var meta=[];if(state.proceso&&state.proceso.trim())meta.push("Proceso cognitivo: "+esc(state.proceso));
+    h+='<p class="doc-meta">'+(meta.length?meta.join(" · "):"Entrega 2 (EV2)")+'</p>';
+
+    if(state.problema&&state.problema.trim()){
+      h+='<div class="node"><span class="lbl">Introducción · problema</span><div>'+esc(state.problema)+'</div></div>';
+    }
+    h+='<div class="doc-tesis"><span class="lbl">Tesis</span>'+emptyOr(state.tesis)+'</div>';
+
+    state.args.forEach(function(a,idx){
+      h+='<div class="node arg"><span class="lbl">Argumento '+(idx+1)+'</span>';
+      h+='<div class="titleline">'+emptyOr(a.afirmacion)+'</div>';
+      var found=TIPOS.filter(function(t){return t.v===a.tipo;})[0];
+      var tipoLbl=found?found.label:a.tipo;
+      h+='<div class="sub"><span class="k">Justificativa:</span> '+emptyOr(a.evidencia)+'</div>';
+      h+='<div class="sub"><span class="k">'+esc(tipoLbl)+' · </span><span class="ev-fuerza" style="background:'+FCOLOR[a.fuerza]+'">'+esc(a.fuerza)+'</span><span class="k"> · función: '+esc(a.funcion)+'</span></div>';
+      h+='<div class="sub"><span class="k">Garantía:</span> '+emptyOr(a.garantia)+'</div>';
+      h+='</div>';
+      if(idx<state.args.length-1){h+='<div class="conn">↓ '+esc(a.conector)+'</div>';}
+    });
+
+    if((state.contra&&state.contra.trim())||(state.refutacion&&state.refutacion.trim())){
+      h+='<div class="conn">↓ '+esc(state.connContra)+'</div>';
+      h+='<div class="node contra"><span class="lbl">Contraargumento anticipado</span><div class="titleline" style="font-weight:400">'+emptyOr(state.contra)+'</div></div>';
+      h+='<div class="node refu"><span class="lbl">Respuesta al contraargumento</span><div class="titleline" style="font-weight:400">'+emptyOr(state.refutacion)+'</div></div>';
+    }
+
+    if(state.conclusion&&state.conclusion.trim()){
+      h+='<div class="node"><span class="lbl">Conclusión</span><div>'+esc(state.conclusion)+'</div></div>';
+    }
+
+    h+='<div class="doc-foot">Generado con el Taller de escritura argumentativa (EV2).</div>';
+    d.innerHTML=h;
+  }
+
+  /* ---------- Persistencia ---------- */
+  var saveTimer=null;
+  function sync(){
+    renderDoc();
+    if(saveTimer)clearTimeout(saveTimer);
+    saveTimer=setTimeout(function(){persist();},400);
+  }
+  function persist(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
+  function load(){
+    try{var raw=localStorage.getItem(STORE);if(raw){var o=JSON.parse(raw);if(o&&o.args&&o.args.length){if(!o.checklist)o.checklist={};state=o;return true;}}}catch(e){}
+    return false;
+  }
+
+  function toast(msg){var t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show");},1900);}
+
+  /* ---------- Botones ---------- */
+  $("#add-arg").addEventListener("click",function(){state.args.push(newArg());renderArgs();sync();});
+  $("#btn-save").addEventListener("click",function(){persist();toast("Guardado en este navegador");});
+  $("#btn-pdf").addEventListener("click",function(){persist();window.print();});
+  $("#btn-clear").addEventListener("click",function(){
+    if(confirm("¿Borrar todo el bosquejo? Esta acción no se puede deshacer.")){
+      state=blank();renderArgs();fillSimple();renderCheck();sync();toast("Bosquejo reiniciado");
+    }
+  });
+  $("#btn-json").addEventListener("click",function(){
+    var blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+    var url=URL.createObjectURL(blob);
+    var a=el("a",{"href":url,"download":"bosquejo-argumentativo.json"});
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  });
+  $("#file-json").addEventListener("change",function(e){
+    var f=e.target.files[0];if(!f)return;
+    var r=new FileReader();
+    r.onload=function(){try{var o=JSON.parse(r.result);if(o&&o.args){if(!o.checklist)o.checklist={};state=o;renderArgs();fillSimple();renderCheck();sync();toast("Copia cargada");}else{toast("Archivo no válido");}}catch(err){toast("No se pudo leer el archivo");}};
+    r.readAsText(f);e.target.value="";
+  });
+
+  /* ---------- Init ---------- */
+  load();
+  bindSimple();
+  fillSimple();
+  renderArgs();
+  renderCheck();
+  renderDoc();
+})();
+</script>
+</body>
+</html>
