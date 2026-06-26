@@ -84,8 +84,10 @@
   .conns{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;}
   .connbox{background:#fff;border:1px solid var(--line);border-radius:8px;padding:.7rem .85rem;}
   .connbox h4{margin:0 0 .35rem;font-size:.95rem;color:var(--primary);}
-  .connbox .ops{display:flex;flex-wrap:wrap;gap:.3rem;}
-  .connbox .ops span{background:var(--primary-soft);color:var(--primary);font-size:.8rem;padding:.15rem .5rem;border-radius:14px;}
+  .connbox .oplist{display:flex;flex-direction:column;gap:.5rem;}
+  .opitem{display:flex;flex-direction:column;gap:.12rem;}
+  .opname{align-self:flex-start;background:var(--primary-soft);color:var(--primary);font-size:.8rem;font-weight:600;padding:.12rem .5rem;border-radius:14px;}
+  .opej{font-size:.84rem;color:var(--muted);font-style:italic;}
 
   .schema{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem;margin:.6rem 0;}
   .scard{background:#fff;border:1px solid var(--line);border-radius:8px;padding:.8rem;}
@@ -217,7 +219,6 @@
         <div class="row"><div class="k">Modalizador</div><div class="v">El grado de certeza: «probablemente», «en general».</div></div>
         <div class="row"><div class="k">Refutación</div><div class="v">Las condiciones bajo las que la afirmación no se sostendría.</div></div>
       </div>
-      <div class="note" style="margin-top:.9rem;"><b>Versión escolar (CER):</b> afirmación, evidencia y razonamiento. Es Toulmin simplificado y es el lenguaje que verán tus estudiantes en la actividad.</div>
     </div>
 
     <div class="card">
@@ -365,16 +366,70 @@
   "use strict";
 
   var CONECTORES = {
-    "Adición":["además","asimismo","igualmente","por otra parte","del mismo modo"],
-    "Oposición / contraste":["sin embargo","no obstante","en cambio","por el contrario","ahora bien"],
-    "Concesión":["aunque","a pesar de que","si bien","pese a que"],
-    "Causa":["porque","ya que","puesto que","dado que","debido a que"],
-    "Consecuencia":["por lo tanto","por consiguiente","en consecuencia","así pues","de ahí que"],
-    "Condición":["si","siempre que","a condición de que","en caso de que"],
-    "Ejemplificación":["por ejemplo","en concreto","a saber","como muestra"],
-    "Reformulación":["es decir","o sea","en otras palabras","dicho de otro modo"],
-    "Ordenación":["en primer lugar","a continuación","por último","finalmente"],
-    "Conclusión":["en suma","en conclusión","en definitiva","en síntesis"]
+    "Adición":[
+      {op:"además",ej:"El método es válido; además, es replicable."},
+      {op:"asimismo",ej:"Mejora la atención; asimismo, reduce la carga cognitiva."},
+      {op:"igualmente",ej:"Funciona en aula; igualmente, en entornos virtuales."},
+      {op:"por otra parte",ej:"Es eficaz; por otra parte, resulta económico."},
+      {op:"del mismo modo",ej:"Dalton aportó evidencia; del mismo modo, lo hizo Thomson."}
+    ],
+    "Oposición / contraste":[
+      {op:"sin embargo",ej:"Es persuasivo; sin embargo, la evidencia es débil."},
+      {op:"no obstante",ej:"Hubo avances; no obstante, persisten dudas."},
+      {op:"en cambio",ej:"Unos lo apoyan; en cambio, otros lo rechazan."},
+      {op:"por el contrario",ej:"No lo debilita; por el contrario, lo refuerza."},
+      {op:"ahora bien",ej:"El dato es claro; ahora bien, conviene matizarlo."}
+    ],
+    "Concesión":[
+      {op:"aunque",ej:"Aunque es costoso, vale la pena."},
+      {op:"a pesar de que",ej:"A pesar de que hay críticas, la propuesta se sostiene."},
+      {op:"si bien",ej:"Si bien es limitado, ofrece pistas útiles."},
+      {op:"pese a que",ej:"Pese a que faltan datos, la tendencia es clara."}
+    ],
+    "Causa":[
+      {op:"porque",ej:"Lo elegí porque hay evidencia que lo respalda."},
+      {op:"ya que",ej:"Es pertinente, ya que responde al currículo."},
+      {op:"puesto que",ej:"Funciona, puesto que activa la metacognición."},
+      {op:"dado que",ej:"Dado que el grupo es heterogéneo, se adapta."},
+      {op:"debido a que",ej:"Se incluyó debido a que mejora la retención."}
+    ],
+    "Consecuencia":[
+      {op:"por lo tanto",ej:"Hay evidencia sólida; por lo tanto, la propuesta se sostiene."},
+      {op:"por consiguiente",ej:"Cumple los criterios; por consiguiente, es válida."},
+      {op:"en consecuencia",ej:"Faltó control; en consecuencia, el efecto es incierto."},
+      {op:"así pues",ej:"Los datos coinciden; así pues, concluimos que funciona."},
+      {op:"de ahí que",ej:"Es ambiguo; de ahí que requiera más estudio."}
+    ],
+    "Condición":[
+      {op:"si",ej:"Si se aplica bien, mejora el aprendizaje."},
+      {op:"siempre que",ej:"Es útil siempre que haya andamiaje."},
+      {op:"a condición de que",ej:"Funciona, a condición de que exista guía docente."},
+      {op:"en caso de que",ej:"En caso de que falle, hay un plan alternativo."}
+    ],
+    "Ejemplificación":[
+      {op:"por ejemplo",ej:"Usa TIC; por ejemplo, una red social educativa."},
+      {op:"en concreto",ej:"Activa procesos cognitivos; en concreto, la metacognición."},
+      {op:"a saber",ej:"Tres fases, a saber: indagar, crear y debatir."},
+      {op:"como muestra",ej:"Como muestra, el estudio de Osborne (2010)."}
+    ],
+    "Reformulación":[
+      {op:"es decir",ej:"Es situado, es decir, depende del contexto."},
+      {op:"o sea",ej:"Es formativo, o sea, orienta la mejora."},
+      {op:"en otras palabras",ej:"Reduce la carga; en otras palabras, libera memoria de trabajo."},
+      {op:"dicho de otro modo",ej:"Dicho de otro modo, el modelo es humano y revisable."}
+    ],
+    "Ordenación":[
+      {op:"en primer lugar",ej:"En primer lugar, defino el problema."},
+      {op:"a continuación",ej:"A continuación, presento la evidencia."},
+      {op:"por último",ej:"Por último, respondo a la objeción."},
+      {op:"finalmente",ej:"Finalmente, cierro el argumento."}
+    ],
+    "Conclusión":[
+      {op:"en suma",ej:"En suma, la propuesta cumple su objetivo."},
+      {op:"en conclusión",ej:"En conclusión, el diseño sostiene el proceso elegido."},
+      {op:"en definitiva",ej:"En definitiva, la evidencia respalda la tesis."},
+      {op:"en síntesis",ej:"En síntesis, argumentar es dialogar con razones."}
+    ]
   };
   var TIPOS = [
     {v:"revision",label:"Revisión sistemática / metaanálisis",fuerza:"Muy alta"},
@@ -429,9 +484,14 @@
     for(var fn in CONECTORES){
       var b=el("div",{"class":"connbox"});
       b.appendChild(el("h4",null,fn));
-      var ops=el("div",{"class":"ops"});
-      CONECTORES[fn].forEach(function(o){ops.appendChild(el("span",null,o));});
-      b.appendChild(ops);box.appendChild(b);
+      var list=el("div",{"class":"oplist"});
+      CONECTORES[fn].forEach(function(o){
+        var item=el("div",{"class":"opitem"});
+        item.appendChild(el("span",{"class":"opname"},o.op));
+        item.appendChild(el("span",{"class":"opej"},o.ej));
+        list.appendChild(item);
+      });
+      b.appendChild(list);box.appendChild(b);
     }
   })();
 
@@ -441,8 +501,8 @@
     for(var fn in CONECTORES){
       var g=el("optgroup",{"label":fn});
       CONECTORES[fn].forEach(function(o){
-        var op=el("option",{"value":o},o);
-        if(o===selected)op.selected=true;
+        var op=el("option",{"value":o.op},o.op);
+        if(o.op===selected)op.selected=true;
         g.appendChild(op);
       });
       sel.appendChild(g);
